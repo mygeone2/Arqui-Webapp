@@ -358,7 +358,7 @@ export default function Navbar() {
                         {/* Cart */}
                         <div className="ml-4 flow-root lg:ml-8">
                           <a
-                            href="#"
+                            href="/cart"
                             className="group -m-2 p-2 flex items-center"
                           >
                             <ShoppingBagIcon
