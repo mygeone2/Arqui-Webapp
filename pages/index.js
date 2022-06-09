@@ -2,7 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 
 import Navbar  from "../components/navbar/Navbar";
-import Example from "../components/navbar/a";
+import Example from "../components/navbar/Navbar";
+import Banner from "../components/banner/Banner";
 
 import EmblaCarousel from '../components/EmblaCarousel/EmblaCarousel'
 import React, { useState } from "react";
@@ -16,8 +17,9 @@ export default function Home() {
  
   return (
     <>
-      <Example />
-      <EmblaCarousel slides={Array.from(Array(SLIDE_COUNT).keys())} />
+      <Navbar />
+      <Banner />
+      {/* <EmblaCarousel slides={Array.from(Array(SLIDE_COUNT).keys())} /> */}
     </>
   );
 }

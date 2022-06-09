@@ -19,36 +19,29 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 export default function Example() {
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-20 w-20"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path d="M13 7H7v6h6V7z" />
-              <path
-                fill-rule="evenodd"
-                d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Minijo</h2>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-20 w-20"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M13 7H7v6h6V7z" />
+                <path
+                  fill-rule="evenodd"
+                  d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              Minijo
+            </h2>
 
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Sign in to your account
             </h2>
-            
           </div>
           <form className="mt-8 space-y-6" action="#" method="POST">
             <input type="hidden" name="remember" defaultValue="true" />
