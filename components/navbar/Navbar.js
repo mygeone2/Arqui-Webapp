@@ -54,7 +54,7 @@ export default function Navbar() {
                     </svg>
                     <a className=" text-white">Minijo V2</a>
                   </div>
-              </Link>
+                  </Link>
                 </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">

@@ -45,7 +45,7 @@ const EmblaCarousel = ({ slides }) => {
       <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
 
       <div className="bottom-text-embla">
-        <Link href="/stepsBuy/start ">
+        <Link href="/stepsBuy/start">
           <a className="font-medium text-indigo-600">
             Empieza tu personalizacion aqui!
           </a>
