@@ -54,7 +54,7 @@ export default function Example() {
   function handleFormSubmit(e){
     e.preventDefault();
 
-    fetch("/api/hello", {
+    fetch("localhost:3030/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,17 +67,18 @@ export default function Example() {
     })
     .then((res) => {
       if (res.status == 200) {
-        return res.json();
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            isAuthenticated: true,
+            user: "miguel",
+            token: "asd",
+          },
+        });
       }
       else{
         setErrorCredentials(true);
       }
-    })
-    .then((resJson) => {
-      dispatch({
-        type: "LOGIN",
-        payload: resJson,
-      });
     })
     .catch((error) => {
       console.log(error);
