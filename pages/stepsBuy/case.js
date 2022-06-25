@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
+import React from "react";
 
 import { CheckIcon } from "@heroicons/react/solid";
 
@@ -107,6 +108,13 @@ const steps = [
 ];
 
 export default function Start() {
+
+  const handleClickCase = event => {
+    //e.preventDefault();
+    console.log('a');
+    
+  }
+
   return (
     <>
       <Navbar />
@@ -195,6 +203,7 @@ export default function Start() {
             {products.map((product) => (
               <div
                 key={product.id}
+                onClick={handleClickCase(product.id)}
                 className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
               >
                 <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">

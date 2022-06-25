@@ -1,24 +1,165 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { Fragment,useEffect, useState, useContext } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
+import { AuthContext } from "./_app";
+import { XCircleIcon } from "@heroicons/react/solid";
+
+
+import useSWR from "swr";
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+import Router from "next/router";
+
+
+ const initialState = {
+   email: "",
+   password: "",
+   isSubmitting: false,
+   errorMessage: null,
+ };
+
+  
 
 export default function Example() {
+
+  const {state, dispatch} = useContext(AuthContext);
+  console.log(state);
+
+  const [data, setData] = useState(initialState);
+  const [errorCredentials, setErrorCredentials] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  
+  useEffect(() => {
+    if(state.isAuthenticated) {
+      Router.replace("/");
+    }
+  }, [state.isAuthenticated]);
+
+  useEffect(() => {
+    if (errorCredentials) {
+      setOpen(true)
+      setErrorCredentials(!errorCredentials);
+    }
+  }, [errorCredentials]);
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  function handleFormSubmit(e){
+    e.preventDefault();
+
+    fetch("/api/hello", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: data.email,
+        pass: data.password,
+        testLogin: 1,
+      }),
+    })
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      }
+      else{
+        setErrorCredentials(true);
+      }
+    })
+    .then((resJson) => {
+      dispatch({
+        type: "LOGIN",
+        payload: resJson,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+  
   return (
     <>
+    
+      {/* Wrong creds */}
+      <Transition.Root show={open} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed z-10 inset-0 overflow-y-auto"
+          onClose={setOpen}
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+
+            {/* This element is to trick the browser into centering the modal contents. */}
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+                  <button
+                    type="button"
+                    className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="sr-only">Close</span>
+                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <ExclamationIcon
+                      className="h-6 w-6 text-red-600"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg leading-6 font-medium text-gray-900"
+                    >
+                      El usuario o la password no son correctas
+                    </Dialog.Title>
+                    {
+  
+                    }
+                  </div>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
@@ -43,7 +184,12 @@ export default function Example() {
               Sign in to your account
             </h2>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+
+          <form
+            className="mt-8 space-y-6"
+            onSubmit={handleFormSubmit}
+            method="POST"
+          >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -51,8 +197,10 @@ export default function Example() {
                   Email address
                 </label>
                 <input
-                  id="email-address"
+                  id="email"
                   name="email"
+                  value={data.email}
+                  onChange={handleInputChange}
                   type="email"
                   autoComplete="email"
                   required
@@ -67,6 +215,8 @@ export default function Example() {
                 <input
                   id="password"
                   name="password"
+                  value={data.password}
+                  onChange={handleInputChange}
                   type="password"
                   autoComplete="current-password"
                   required
@@ -75,7 +225,6 @@ export default function Example() {
                 />
               </div>
             </div>
-
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -105,7 +254,9 @@ export default function Example() {
             <div>
               <button
                 type="submit"
+                disabled={data.isSubmitting}
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onSubmit={handleFormSubmit}
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <LockClosedIcon
@@ -121,4 +272,5 @@ export default function Example() {
       </div>
     </>
   );
-}
+  }
+

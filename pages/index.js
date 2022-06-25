@@ -9,6 +9,7 @@ import EmblaCarousel from '../components/EmblaCarousel/EmblaCarousel'
 import React, { useState } from "react";
 
 
+
 const SLIDE_COUNT = 5;
 // const slides = ;
 

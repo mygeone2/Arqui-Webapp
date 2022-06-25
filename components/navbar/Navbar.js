@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState,useReduce,useContext } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
   MenuIcon,
@@ -7,6 +7,9 @@ import {
   ShoppingBagIcon,
   XIcon,
 } from "@heroicons/react/outline";
+
+import { AuthContext } from "../../pages/_app";
+import Link from "next/dist/client/link";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 
@@ -92,16 +95,13 @@ const navigation = {
   ],
 };
 
-
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-
-
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { state, dispatch } = useContext(AuthContext);
 
   return (
     <div className="bg-white">
@@ -306,22 +306,24 @@ export default function Navbar() {
                   <div className="h-16 flex items-center justify-between">
                     {/* Logo (lg+) */}
                     <div className="hidden lg:flex-1 lg:flex lg:items-center">
-                      <a href="/">
-                        <span className="sr-only">Minjo</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="white"
-                        >
-                          <path d="M13 7H7v6h6V7z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </a>
+                      <Link href="/">
+                        <div>
+                          <span className="sr-only">Minjo</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="white"
+                          >
+                            <path d="M13 7H7v6h6V7z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </Link>
                     </div>
 
                     {/* Mobile menu and search (lg-) */}
@@ -347,12 +349,15 @@ export default function Navbar() {
                     </a>
 
                     <div className="flex-1 flex items-center justify-end">
-                      <a
-                        href="/login"
-                        className="hidden text-sm font-medium text-white lg:block"
+                      <Link
+                        href={!state.isAuthenticated ? "/login" : "/profile"}
                       >
-                        Login
-                      </a>
+                        <p className="hidden text-sm font-medium text-white lg:block">
+                          {!state.isAuthenticated
+                            ? "Login"
+                            : "Bienvenido Miguel"}
+                        </p>
+                      </Link>
 
                       <div className="flex items-center lg:ml-8">
                         {/* Cart */}
