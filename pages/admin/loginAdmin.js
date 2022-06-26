@@ -1,37 +1,34 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
-import { Fragment,useEffect, useState, useContext } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
-import { AuthContext } from "./_app";
+import { AuthAdminContext } from "./index";
 import { XCircleIcon } from "@heroicons/react/solid";
 import Router from "next/router";
 
+const initialState = {
+  email: "",
+  password: "",
+  isSubmitting: false,
+  errorMessage: null,
+};
 
- const initialState = {
-   email: "",
-   password: "",
-   isSubmitting: false,
-   errorMessage: null,
- };
-export default function Example() {
-
-  const {state, dispatch} = useContext(AuthContext);
-
+export default function AdminLogin() {
+  const { state, dispatch } = useContext(AuthAdminContext);
 
   const [data, setData] = useState(initialState);
   const [errorCredentials, setErrorCredentials] = useState(false);
   const [open, setOpen] = useState(false);
 
-  
   useEffect(() => {
-    if(state.isAuthenticated) {
-      Router.replace("/");
+    if (state.isAdminAuthenticated) {
+      Router.replace("/panel");
     }
-  }, [state.isAuthenticated]);
+  }, [state.isAdminAuthenticated]);
 
   useEffect(() => {
     if (errorCredentials) {
-      setOpen(true)
+      setOpen(true);
       setErrorCredentials(!errorCredentials);
     }
   }, [errorCredentials]);
@@ -43,10 +40,10 @@ export default function Example() {
     });
   };
 
-  function handleFormSubmit(e){
+  function handleFormSubmit(e) {
     e.preventDefault();
 
-    fetch("localhost:3030/api/login", {
+    fetch("api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,32 +51,29 @@ export default function Example() {
       body: JSON.stringify({
         email: data.email,
         pass: data.password,
-        testLogin: 1,
+        isAdmin: 1,
       }),
     })
-    .then((res) => {
-      if (res.status == 200) {
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            isAuthenticated: true,
-            user: "miguel",
-            token: "asd",
-          },
-        });
-      }
-      else{
-        setErrorCredentials(true);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((res) => {
+        if (res.status == 200) {
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              isAdminAuthenticated: true,
+              adminUser: "miguel",
+            },
+          });
+        } else {
+          setErrorCredentials(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
-  
+
   return (
     <>
-    
       {/* Wrong creds */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -141,9 +135,7 @@ export default function Example() {
                     >
                       El usuario o la password no son correctas
                     </Dialog.Title>
-                    {
-  
-                    }
+                    {}
                   </div>
                 </div>
               </div>
@@ -151,7 +143,6 @@ export default function Example() {
           </div>
         </Dialog>
       </Transition.Root>
-
 
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
@@ -170,12 +161,10 @@ export default function Example() {
                   clip-rule="evenodd"
                 />
               </svg>
-              Minijo
+              Minijo Admin User
             </h2>
 
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Sign in to your account
-            </h2>
+
           </div>
 
           <form
@@ -265,5 +254,4 @@ export default function Example() {
       </div>
     </>
   );
-  }
-
+}

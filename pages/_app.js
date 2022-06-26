@@ -10,25 +10,48 @@ import "../styles/globals.css";
 
 export const AuthContext = React.createContext();
 export const KeyboardContext = React.createContext();
+export const AuthAdminContext = React.createContext({
+  isAdminAuthenticated: false,
+  adminUser: null,
+});
 
 
 const initialState = {
   isAuthenticated: false,
   user: null,
-  token: null,
 };
+
+const reducerAdmin = (state, action) => {
+  switch (action.type) {
+    case "LOGIN":
+      localStorage.setItem("userAdmin", JSON.stringify(action.payload.user));
+      return {
+        ...state,
+        isAdminAuthenticated: true,
+        adminUser: action.payload.userAdmin,
+      };
+    case "LOGOUT":
+      localStorage.clear();
+      return {
+        ...state,
+        isAdminAuthenticated: false,
+        adminUser: null,
+      };
+    default:
+      return state;
+  }
+
+}
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       console.log(action.payload);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
-        token: action.payload.token,
       };
     case "LOGOUT":
       localStorage.clear();
@@ -48,14 +71,12 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user") || null);
-    const token = JSON.parse(localStorage.getItem("token") || null);
 
-    if (user && token) {
+    if (user) {
       dispatch({
         type: "LOGIN",
         payload: {
           user,
-          token,
         },
       });
     }
