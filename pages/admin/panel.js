@@ -1,27 +1,9 @@
 import Navbar from '../../components/navbar/Navbar'
 import React,{useState, useRef} from 'react';
-import useFileUpload from "react-use-file-upload";
-import React, { useRef } from "react";
-
-
+import {useFileUpload} from "react-use-file-upload";
 
 export default function UploadFile() {
-  const {
-    files,
-    fileNames,
-    fileTypes,
-    totalSize,
-    totalSizeInBytes,
-    handleDragDropEvent,
-    clearAllFiles,
-    createFormData,
-    setFiles,
-    removeFile,
-  } = useFileUpload();
-
-  const inputRef = useRef();
-
-
+  
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -30,16 +12,15 @@ export default function UploadFile() {
 
   // Handles file upload event and updates state
   const handleUpload = async (event) =>{
-    e.preventDefault();
-    const formData = createFormData();
+    event.preventDefault();
 
-    //setFile(event.target.files[0]);
+    setFile(event.target.files[0]);
 
-    //console.log(event.target.files[0]);
+    console.log(event.target.files[0]);
 
     fetch("/api/csv", {
       method: "POST",
-      body: "some data",
+      body: file,
     })
     .then((response) => response.json())
     .then((result) => {
@@ -95,5 +76,3 @@ export default function UploadFile() {
     </>
   );
 }
-
-

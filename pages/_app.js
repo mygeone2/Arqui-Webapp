@@ -9,39 +9,11 @@ import "../styles/globals.css";
 
 
 export const AuthContext = React.createContext();
-export const KeyboardContext = React.createContext();
-export const AuthAdminContext = React.createContext({
-  isAdminAuthenticated: false,
-  adminUser: null,
-});
-
 
 const initialState = {
   isAuthenticated: false,
   user: null,
 };
-
-const reducerAdmin = (state, action) => {
-  switch (action.type) {
-    case "LOGIN":
-      localStorage.setItem("userAdmin", JSON.stringify(action.payload.user));
-      return {
-        ...state,
-        isAdminAuthenticated: true,
-        adminUser: action.payload.userAdmin,
-      };
-    case "LOGOUT":
-      localStorage.clear();
-      return {
-        ...state,
-        isAdminAuthenticated: false,
-        adminUser: null,
-      };
-    default:
-      return state;
-  }
-
-}
 
 const reducer = (state, action) => {
   switch (action.type) {

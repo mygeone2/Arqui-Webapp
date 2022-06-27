@@ -10,6 +10,7 @@ import {
 
 import { AuthContext } from "../../pages/_app";
 import Link from "next/dist/client/link";
+import { AuthAdminContext } from "../../pages/admin/index";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 
@@ -101,7 +102,10 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  console.log(useContext(AuthContext));
+
   const { state, dispatch } = useContext(AuthContext);
+  const { stateAdmin, dispatchAdmin } = useContext(AuthAdminContext);
 
   return (
     <div className="bg-white">
@@ -356,6 +360,9 @@ export default function Navbar() {
                           {!state.isAuthenticated
                             ? "Login"
                             : "Bienvenido Miguel"}
+                          {!stateAdmin.isAdminAuthenticated
+                            ? "Login"
+                            : "Bienvenido Admin"}
                         </p>
                       </Link>
 

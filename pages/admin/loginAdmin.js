@@ -14,17 +14,17 @@ const initialState = {
 };
 
 export default function AdminLogin() {
-  const { state, dispatch } = useContext(AuthAdminContext);
+  const { stateAdmin, dispatchAdmin } = useContext(AuthAdminContext);
 
   const [data, setData] = useState(initialState);
   const [errorCredentials, setErrorCredentials] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (state.isAdminAuthenticated) {
-      Router.replace("/panel");
+    if (stateAdmin.isAdminAuthenticated) {
+      Router.replace("/admin/panel");
     }
-  }, [state.isAdminAuthenticated]);
+  }, [stateAdmin.isAdminAuthenticated]);
 
   useEffect(() => {
     if (errorCredentials) {
@@ -56,7 +56,7 @@ export default function AdminLogin() {
     })
       .then((res) => {
         if (res.status == 200) {
-          dispatch({
+          dispatchAdmin({
             type: "LOGIN",
             payload: {
               isAdminAuthenticated: true,
