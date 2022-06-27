@@ -2,11 +2,10 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { Fragment,useEffect, useState, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
-
-import { UserAuthContext } from "Context/UserAuthContext";
-
 import { XCircleIcon } from "@heroicons/react/solid";
 import Router from "next/router";
+
+import { UserAuthContext } from "Context/UserAuthContext";
 
 
  const initialState = {

@@ -1,41 +1,13 @@
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
-import React from "react";
-
+import React,{useEffect, useContext} from "react";
+import Router from "next/router";
 import { CheckIcon } from "@heroicons/react/solid";
+import { ProductsContext } from "../../Context/ProductsContext";
+const URL_API_PRODUCTS = "http://localhost:3000/api/products";
 
-const Wrapper = styled.button`
-  background-color: grey;
-  height: auto;
-  width: 150rem;
-  margin-top: 5rem;
-  margin-left: 25rem;
 
-  display: flex;
-  flex-direction: column;
-`;
-
-const Top = styled.a`
-  color: red;
-  font-size: 5rem;
-  margin-left: 5rem;
-  margin-top: 5rem;
-  background-color: blue;
-
-  position: top;
-`;
-
-const Prod = styled.div`
-  background-color: green;
-
-  height: 5rem;
-  width: 100rem;
-
-  margin-left: 20rem;
-  margin-top: 10rem;
-`;
-
-const products = [
+const productsList = [
   {
     id: 1,
     name: "Earthen Bottle",
@@ -107,12 +79,37 @@ const steps = [
   },
 ];
 
-export default function Start() {
+export default function Case() {
+  const { products, setProducts } = React.useContext(ProductsContext);
+  const [stateProductsDisplay, setStateProductsDisplay] = React.useState([]);
 
-  const handleClickCase = event => {
-    //e.preventDefault();
-    console.log('a');
+  useEffect(() => {
+    console.log(stateProductsDisplay);
+
+    fetch(URL_API_PRODUCTS, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: "2,"+products.PCB, 
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setStateProductsDisplay(data.arrayId);
+    })
+    .catch(err => console.log(err));
+
     
+  }, []);
+
+  const handleClickCase = (id) => {
+    setProducts({
+      ...products,
+      Case: id,
+    });
+    Router.replace("/stepsBuy/switches");
   }
 
   return (
@@ -200,10 +197,12 @@ export default function Start() {
           <h2 className="sr-only">Products</h2>
 
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-            {products.map((product) => (
+            {stateProductsDisplay.map((product, productIdx) => (
               <div
                 key={product.id}
-                onClick={handleClickCase(product.id)}
+                onClick={() => {
+                  handleClickCase(product)
+                }}
                 className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
               >
                 <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
