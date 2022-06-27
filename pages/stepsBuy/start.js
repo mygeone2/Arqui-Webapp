@@ -1,44 +1,11 @@
-import styled from "styled-components";
+import React,{useEffect} from "react";
 import Navbar from "../../components/navbar/Navbar";
-
 import { CheckIcon } from "@heroicons/react/solid";
 import Link from "next/link";
+import { ProductsContext } from "../../Context/ProductsContext";
+const URL_API_PRODUCTS = "http:localhost:3030/products";
 
-
-const Wrapper = styled.button`
-  background-color: grey;
-  height: auto;
-  width: 150rem;
-  margin-top: 5rem;
-  margin-left: 25rem;
-
-  display: flex;
-  flex-direction: column;
-`;
-
-const Top = styled.a`
-  color: red;
-  font-size: 5rem;
-  margin-left: 5rem;
-  margin-top: 5rem;
-  background-color: blue;
-
-  position: top;
-`;
-
-const Prod = styled.div`
-  background-color: green;
-
-  height: 5rem;
-  width: 100rem;
-
-  margin-left: 20rem;
-  margin-top: 10rem;
-
-
-`;
-
-const products = [
+const productsList = [
   {
     id: 1,
     name: "Earthen Bottle",
@@ -89,6 +56,14 @@ const steps = [
 ];
 
 export default function IniciarStyled(){
+  const {products, setProducts} = React.useContext(ProductsContext);
+
+  console.log(props.data);
+
+  const handleClickPCB = (productId) => {
+    return console.log(productId);
+  }
+
 	return (
     <>
       <Navbar />
@@ -174,12 +149,16 @@ export default function IniciarStyled(){
           <h2 className="sr-only">Products</h2>
 
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-            {products.map((product) => (
+            {productsList.map((product) => (
               // Item Product
-              <Link href="/stepsBuy/case">
+              //<Link href="/stepsBuy/case">
                 <div
                   key={product.id}
                   className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
+                  onClick={() => {
+                    handleClickPCB(product.id);
+                    
+                  }}
                 >
                   <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                     <img
@@ -208,12 +187,30 @@ export default function IniciarStyled(){
                     </div>
                   </div>
                 </div>
-              </Link>
+              //</Link>
             ))}
           </div>
         </div>
       </div>
-      )
     </>
   );
+}
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch(URL_API_PRODUCTS, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: "1",
+      }),
+  
+  });
+
+  const data = await res.json();
+
+  // Pass data to the page via props
+  return { props: { data } };
 }

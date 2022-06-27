@@ -2,6 +2,8 @@ import Navbar from '../../components/navbar/Navbar'
 import React,{useState, useRef, useContext} from 'react';
 import {AdminAuthContext} from '../../Context/AdminAuthContext'
 
+const api_csv = process.env.NEXT_PUBLIC_API_CSV;
+
 export default function UploadFile() {
   const { stateAdmin, dispatchAdmin } = useContext(AdminAuthContext)
   
@@ -14,12 +16,14 @@ export default function UploadFile() {
   // Handles file upload event and updates state
   const handleUpload = async (event) =>{
     event.preventDefault();
-
     setFile(event.target.files[0]);
 
-    console.log(event.target.files[0]);
 
-    fetch(process.env.API_CSV, {
+    const data = new FormData();
+    data.append("file", event.target.files[0]);
+
+
+    fetch(api_csv, {
       method: "POST",
       body: file,
     })

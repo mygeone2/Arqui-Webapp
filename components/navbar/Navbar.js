@@ -109,8 +109,7 @@ export default function Navbar(props) {
   const { userState,  userDispatch }  = useContext(UserAuthContext);
   const { adminState, adminDispatch } = useContext(AdminAuthContext);
 
-  console.log(adminState);
-
+  
   function handleText() {
     if(props.isAdminSite){
       if(adminState.isAdminAuthenticated){
