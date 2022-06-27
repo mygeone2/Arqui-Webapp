@@ -8,9 +8,9 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 
-import { AuthContext } from "../../pages/_app";
 import Link from "next/dist/client/link";
-import { AuthAdminContext } from "../../pages/admin/index";
+import { UserAuthContext, UserAuthContextProvider }   from "../../Context/UserAuthContext";
+import { AdminAuthContext, AdminAuthContextProvider } from "../../Context/AdminAuthContext";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 
@@ -100,12 +100,58 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  console.log(useContext(AuthContext));
 
-  const { state, dispatch } = useContext(AuthContext);
-  const { stateAdmin, dispatchAdmin } = useContext(AuthAdminContext);
+
+
+export default function Navbar(props) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const { userState,  userDispatch }  = useContext(UserAuthContext);
+  const { adminState, adminDispatch } = useContext(AdminAuthContext);
+
+  console.log(adminState);
+
+  function handleText() {
+    if(props.isAdminSite){
+      if(adminState.isAdminAuthenticated){
+        return (
+          <div className="flex-1 flex items-center justify-end">
+            <Link href="/">
+              <p className="hidden text-sm font-medium text-white lg:block">Logout Admin</p>
+            </Link>
+          </div>
+        )
+      }else{
+        <div className="flex-1 flex items-center justify-end">
+          <Link href="/admin/loginAdmin">
+            <p className="hidden text-sm font-medium text-white lg:block">
+              Login Admin
+            </p>
+          </Link>
+        </div>;
+      }
+    }else{
+      if(userState.isUserAuthenticated){
+        return (
+          <div className="flex-1 flex items-center justify-end">
+            <Link href="/">
+              <p className="hidden text-sm font-medium text-white lg:block">Logout User</p>
+            </Link>
+          </div>
+        )
+      }else{
+        return(
+        <div className="flex-1 flex items-center justify-end">
+          <Link href="/login">
+            <p className="hidden text-sm font-medium text-white lg:block">
+              Login User
+            </p>
+          </Link>
+        </div>
+        )
+      }
+    }
+  }
 
   return (
     <div className="bg-white">
@@ -353,18 +399,7 @@ export default function Navbar() {
                     </a>
 
                     <div className="flex-1 flex items-center justify-end">
-                      <Link
-                        href={!state.isAuthenticated ? "/login" : "/profile"}
-                      >
-                        <p className="hidden text-sm font-medium text-white lg:block">
-                          {!state.isAuthenticated
-                            ? "Login"
-                            : "Bienvenido Miguel"}
-                          {!stateAdmin.isAdminAuthenticated
-                            ? "Login"
-                            : "Bienvenido Admin"}
-                        </p>
-                      </Link>
+                      {handleText()}
 
                       <div className="flex items-center lg:ml-8">
                         {/* Cart */}

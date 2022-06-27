@@ -2,7 +2,9 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { Fragment,useEffect, useState, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
-import { AuthContext } from "./_app";
+
+import { UserAuthContext } from "Context/UserAuthContext";
+
 import { XCircleIcon } from "@heroicons/react/solid";
 import Router from "next/router";
 
@@ -13,9 +15,11 @@ import Router from "next/router";
    isSubmitting: false,
    errorMessage: null,
  };
+
+ 
 export default function Example() {
 
-  const {state, dispatch} = useContext(AuthContext);
+  const { userState, userDispatch } = useContext(UserAuthContext);
 
 
   const [data, setData] = useState(initialState);
@@ -24,10 +28,10 @@ export default function Example() {
 
   
   useEffect(() => {
-    if(state.isAuthenticated) {
+    if (userState.isAuthenticated) {
       Router.replace("/");
     }
-  }, [state.isAuthenticated]);
+  }, [userState.isAuthenticated]);
 
   useEffect(() => {
     if (errorCredentials) {
@@ -46,7 +50,7 @@ export default function Example() {
   function handleFormSubmit(e){
     e.preventDefault();
 
-    fetch("localhost:3030/api/login", {
+    fetch(process.env.URL_API_LOGIN, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,27 +58,26 @@ export default function Example() {
       body: JSON.stringify({
         email: data.email,
         pass: data.password,
-        testLogin: 1,
+        isAdmin: 0,
       }),
     })
-    .then((res) => {
-      if (res.status == 200) {
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            isAuthenticated: true,
-            user: "miguel",
-            token: "asd",
-          },
-        });
-      }
-      else{
-        setErrorCredentials(true);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((res) => {
+        if (res.status == 200) {
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              isAuthenticated: true,
+              user: "miguel",
+              token: "asd",
+            },
+          });
+        } else {
+          setErrorCredentials(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   
   return (
@@ -159,15 +162,15 @@ export default function Example() {
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-20 w-20"
+                className="h-20 w-20"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
                 <path d="M13 7H7v6h6V7z" />
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
               Minijo

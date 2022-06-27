@@ -1,68 +1,24 @@
 import "../styles/globals.css";
-
-import React, { useState,useEffect } from "react";
-
 import "../styles/base.css";
 import "../styles/reset.css";
 import "../styles/embla.css";
 import "../styles/globals.css";
 
+import React, { useState,useEffect } from "react";
+import { UserAuthContext, UserAuthContextProvider } from "../Context/UserAuthContext";
+import { AdminAuthContext, AdminAuthContextProvider } from "../Context/AdminAuthContext";
 
-export const AuthContext = React.createContext();
-
-const initialState = {
-  isAuthenticated: false,
-  user: null,
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "LOGIN":
-      console.log(action.payload);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-      };
-    case "LOGOUT":
-      localStorage.clear();
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null,
-      };
-    default:
-      return state;
-  }
-};
 
 function MyApp({ Component, pageProps }) {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
 
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || null);
-
-    if (user) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          user,
-        },
-      });
-    }
-  }, []);
-
-  
   return (
-    <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}>
-        <Component {...pageProps} />
-    </AuthContext.Provider>
+    <>
+      <AdminAuthContextProvider>
+        <UserAuthContextProvider>
+          <Component {...pageProps} />
+        </UserAuthContextProvider>
+      </AdminAuthContextProvider>
+    </>
   );
 }
 
