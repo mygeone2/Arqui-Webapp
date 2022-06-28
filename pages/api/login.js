@@ -5,17 +5,21 @@ export default function handler(req, res) {
     const user = req.body.user;
     const pass = req.body.pass;
     const isAdmin = req.body.isAdmin;
+    
+    res.status(200).json({ fill: 1 });
 
-    if (isAdmin == 1 && process.env.test) {
-      res.status(200).json({fill:1});
-    } else {
-      res.status(400).send("Bad Login Creds");
-    }
-
-    if (isAdmin == 0 && process.env.test) {
-      res.status(200).json({ fill: 1 });
-    } else {
-      res.status(400).send("Bad Login Creds");
-    }
+  
   }
 }
+  // if (isAdmin == 1 && process.env.TEST) {
+  //   res.status(200).json({ fill: 1 });
+  // } else {
+  //   res.status(200).json({ fill: 1 });
+  // }
+
+  // if (isAdmin === 0 && process.env.TEST == 1) {
+  //   console.log(typeof process.env.TEST);
+  //   res.status(200).json({ fill: 1 });
+  // } else {
+  //   res.status(200).json({ fill: 1 });
+  // }

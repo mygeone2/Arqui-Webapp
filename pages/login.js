@@ -5,7 +5,7 @@ import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
 import { XCircleIcon } from "@heroicons/react/solid";
 import Router from "next/router";
 
-import { UserAuthContext } from "Context/UserAuthContext";
+import { UserAuthContext } from "../Context/UserAuthContext";
 
 
  const initialState = {
@@ -49,7 +49,7 @@ export default function Example() {
   function handleFormSubmit(e){
     e.preventDefault();
 
-    fetch(process.env.URL_API_LOGIN, {
+    fetch(process.env.NEXT_PUBLIC_URL_API_LOGIN, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function Example() {
     })
       .then((res) => {
         if (res.status == 200) {
-          dispatch({
+          userDispatch({
             type: "LOGIN",
             payload: {
               isAuthenticated: true,
@@ -70,10 +70,12 @@ export default function Example() {
               token: "asd",
             },
           });
+          Router.replace("/");
         } else {
           setErrorCredentials(true);
         }
       })
+
       .catch((error) => {
         console.log(error);
       });

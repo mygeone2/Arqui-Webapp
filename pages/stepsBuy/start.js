@@ -8,7 +8,7 @@ import { UserAuthContext } from "../../Context/UserAuthContext";
 
 import { addBasePath } from "next/dist/shared/lib/router/router";
 import Router from "next/router";
-const URL_API_PRODUCTS = "http://localhost:3000/api/products";
+
 
 const productsList = {
   1 : {
@@ -75,20 +75,20 @@ export default function IniciarStyled(){
 
   useEffect(() => {
     
-    fetch(URL_API_PRODUCTS, {
+    fetch(process.env.NEXT_PUBLIC_URL_API_PRODUCTS, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        data1: 1
+        data1: 1,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setStateProductsDisplay(data.arrayId);
       })
-    })
-    .then(res => res.json())
-    .then(data => {
-      setStateProductsDisplay(data.arrayId);
-    })
-    .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   
