@@ -7,8 +7,6 @@ export default function handler(req, res) {
     const isAdmin = req.body.isAdmin;
     
     res.status(200).json({ fill: 1 });
-
-  
   }
 }
   // if (isAdmin == 1 && process.env.TEST) {
