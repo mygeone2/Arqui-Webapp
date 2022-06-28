@@ -127,7 +127,7 @@ export default function Navbar(props) {
         </div>;
       }
     }else{
-      if(userState.isUserAuthenticated){
+      if(userState.isAuthenticated){
         return (
           <div className="flex-1 flex items-center justify-end">
             <Link href="/">
