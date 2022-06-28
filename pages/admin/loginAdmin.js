@@ -49,7 +49,7 @@ export default function AdminLogin() {
   function handleFormSubmit(e) {
     e.preventDefault();
 
-    fetch(process.env.url_api_login, {
+    fetch(process.env.NEXT_PUBLIC_URL_API_LOGIN, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

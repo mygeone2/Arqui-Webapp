@@ -4,11 +4,9 @@ import {AdminAuthContext} from '../../Context/AdminAuthContext'
 
 const api_csv = process.env.NEXT_PUBLIC_API_CSV;
 
+
 export default function UploadFile() {
   const { stateAdmin, dispatchAdmin } = useContext(AdminAuthContext)
-  
-  const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
 
   // State to store uploaded file
   const [file, setFile] = React.useState("");
@@ -18,10 +16,8 @@ export default function UploadFile() {
     event.preventDefault();
     setFile(event.target.files[0]);
 
-
     const data = new FormData();
     data.append("file", event.target.files[0]);
-
 
     fetch(api_csv, {
       method: "POST",

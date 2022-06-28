@@ -60,25 +60,26 @@ export default function Example() {
         isAdmin: 0,
       }),
     })
-      .then((res) => {
-        if (res.status == 200) {
-          userDispatch({
-            type: "LOGIN",
-            payload: {
-              isAuthenticated: true,
-              user: "miguel",
-              token: "asd",
-            },
-          });
-          Router.replace("/");
-        } else {
-          setErrorCredentials(true);
-        }
-      })
+    .then((res) => {
+      if (res.status == 200) {
+        console.log(res.body);
+        userDispatch({
+          type: "LOGIN",
+          payload: {
+            isAuthenticated: true,
+            user: 1,
+            token: "asd",
+          },
+        });
+        Router.replace("/");
+      } else {
+        setErrorCredentials(true);
+      }
+    })
 
-      .catch((error) => {
-        console.log(error);
-      });
+    .catch((error) => {
+      console.log(error);
+    });
   }
   
   return (

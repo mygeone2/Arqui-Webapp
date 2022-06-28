@@ -4,41 +4,46 @@ import { CheckIcon } from "@heroicons/react/solid";
 import { ProductsContext } from "../../Context/ProductsContext";
 import React,{useEffect, useContext} from "react";
 import Router from "next/router";
-const URL_API_PRODUCTS = "http://localhost:3000/api/products";
 
 
-const products = [
-  {
-    id: 1,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+const productsList = {
+  1: {
+    name: "Gateron Black",
+    price: "$1000",
+    imageSrc: "/FotosMinijo/switches/3.jpg",
+    imageAlt: "MX",
   },
-  {
-    id: 2,
-    name: "Nomad Tumbler",
-    href: "#",
-    price: "$35",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg",
-    imageAlt:
-      "Olive drab green insulated bottle with flared screw lid and flat top.",
+  2: {
+    name: "Gateron Milky",
+    price: "$500",
+    imageSrc: "/FotosMinijo/switches/1.jpg",
+    imageAlt: "BlMXack",
   },
-  {
-    id: 3,
-    name: "Focus Paper Refill",
-    href: "#",
-    price: "$89",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg",
-    imageAlt:
-      "Person using a pen to cross a task off a productivity paper card.",
-  }
-];
+  3: {
+    name: "Kailh Crystal Jade",
+    price: "$700",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "MX",
+  },
+  4: {
+    name: "Cherry Blue",
+    price: "$650",
+    imageSrc: "/FotosMinijo/switches/4.jpg",
+    imageAlt: "MX",
+  },
+  5: {
+    name: "Gateron Housing",
+    price: "$400",
+    imageSrc: "/FotosMinijo/switches/1.jpg",
+    imageAlt: "MX",
+  },
+  6: {
+    name: "Kailh Low Profile ",
+    price: "$300",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "Alps",
+  },
+};
 
 
 const steps = [
@@ -50,14 +55,14 @@ const steps = [
   },
   {
     id: "Step 2",
-    name: "Elige tu Case",
-    href: "/stepsBuy/case",
+    name: "Elige tus switches",
+    href: "/stepsBuy/switches",
     status: "current",
   },
   {
     id: "Step 3",
-    name: "Elige tu Switches",
-    href: "/stepsBuy/switches",
+    name: "Elige tu case",
+    href: "/stepsBuy/case",
     status: "upcoming",
   },
   {
@@ -75,18 +80,23 @@ export default function Switches() {
      useEffect(() => {
        console.log(stateProductsDisplay);
 
-       fetch(URL_API_PRODUCTS, {
+       fetch(process.env.NEXT_PUBLIC_URL_API_PRODUCTS, {
          method: "POST",
          headers: {
            "Content-Type": "application/json",
          },
          body: JSON.stringify({
-           data: "3,"+products.Case,
+           data: "paso=3,pcb="+products.PCB+",kb_case="+products.Case
          }),
        })
          .then((res) => res.json())
          .then((data) => {
-           setStateProductsDisplay(data.arrayId);
+           //conver from string to int all items in array "data"
+           data.result.map((item) => {
+             item = parseInt(item);
+             return item;
+           });
+           setStateProductsDisplay(data.result);
          })
          .catch((err) => console.log(err));
      }, []);
@@ -179,44 +189,47 @@ export default function Switches() {
           ))}
         </ol>
       </nav>
+
       <div className="bg-white">
         <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <h2 className="sr-only">Products</h2>
-
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
             {stateProductsDisplay.map((product, productIdx) => (
+              // Item Product
+              //<Link href="/stepsBuy/case">
               <div
-                //key={product.id}
+                //key={'a'}
+                className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
                 onClick={() => {
                   handleClickSwitches(product);
                 }}
-                className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
               >
                 <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                   <img
-                    src={product.imageSrc}
+                    src={productsList[product].imageSrc}
                     alt={product.imageAlt}
                     className="w-full h-full object-center object-cover sm:w-full sm:h-full"
                   />
                 </div>
                 <div className="flex-1 p-4 space-y-2 flex flex-col">
                   <h3 className="text-sm font-medium text-gray-900">
-                    <a href={product.href}>
+                    <a href={productsList[product].href}>
                       <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
+                      {productsList[product].name}
                     </a>
                   </h3>
-                  <p className="text-sm text-gray-500">{product.description}</p>
+
                   <div className="flex-1 flex flex-col justify-end">
                     <p className="text-sm italic text-gray-500">
-                      {product.options}
+                      {productsList[product].imageAlt}
                     </p>
                     <p className="text-base font-medium text-gray-900">
-                      {product.price}
+                      {productsList[product].price}
                     </p>
                   </div>
                 </div>
               </div>
+              //</Link>
             ))}
           </div>
         </div>

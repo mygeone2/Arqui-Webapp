@@ -1,23 +1,47 @@
+import { LockClosedIcon } from "@heroicons/react/solid";
+import React,{ Fragment, useEffect, useState, useContext } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
+import { XCircleIcon } from "@heroicons/react/solid";
+
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
 import { CheckIcon } from "@heroicons/react/solid";
 import { ProductsContext } from "../../Context/ProductsContext";
-import React,{useEffect,useState} from "react";
 import Router from "next/router";
-const URL_API_PRODUCTS = "http://localhost:3000/api/products";
 
-const products = [
-  {
-    id: 1,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  }
-];
+const productsList = {
+  1: {
+    name: "PBTFANS",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/1.jpg",
+    imageAlt: "MX Pink",
+  },
+  2: {
+    name: "PBTFANS",
+    price: "$22000",
+    imageSrc: "/FotosMinijo/keycaps/2.jpg",
+    imageAlt: "MX RED",
+  },
+  3: {
+    name: "GMK",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/3.jpg",
+    imageAlt: "MX Sky Cho",
+  },
+  4: {
+    name: "GMK",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/4.jpg",
+    imageAlt: "MX AKUMA",
+  },
+  5: {
+    name: "PBTFANS",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/5.jpg",
+    imageAlt: "MX Purple",
+  },
+};
 
 const steps = [
   {
@@ -28,14 +52,14 @@ const steps = [
   },
   {
     id: "Step 2",
-    name: "Elige tu Case",
-    href: "/stepsBuy/case",
+    name: "Elige tus switches",
+    href: "/stepsBuy/switches",
     status: "current",
   },
   {
     id: "Step 3",
-    name: "Elige tu Switches",
-    href: "/stepsBuy/switches",
+    name: "Elige tu case",
+    href: "/stepsBuy/keycaps",
     status: "upcoming",
   },
   {
@@ -47,28 +71,50 @@ const steps = [
 ];
 
 export default function Start() {
-
   const { products, setProducts } = React.useContext(ProductsContext);
   const [stateProductsDisplay, setStateProductsDisplay] = React.useState([]);
+  const { stockError, setStockError } = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     console.log(stateProductsDisplay);
 
-    fetch(URL_API_PRODUCTS, {
+    fetch(process.env.NEXT_PUBLIC_URL_API_PRODUCTS, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        data: "4,"+products.Switches,
+        data:
+          "paso=4,pcb=" +
+          products.PCB +
+          ",kb_case=" +
+          products.Case +
+          ",switch=" +
+          products.Switches,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        setStateProductsDisplay(data.arrayId);
+        if (data.result[0] == "") {
+          setStockError(true);
+        }
+        data.result.map((item) => {
+          item = parseInt(item);
+          return item;
+        });
+        setStateProductsDisplay(data.result);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  // useEffect(() => {
+  //   if (stockError) {
+  //     setOpen(true);
+  //     setErrorCredentials(!stockError);
+  //     Router.replace("/");
+  //   }
+  // }, [stockError]);
 
   const handleClickKeycaps = (id) => {
     setProducts({
@@ -81,6 +127,77 @@ export default function Start() {
   return (
     <>
       <Navbar />
+
+      {/* Stock Error */}
+      <Transition.Root show={open} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed z-10 inset-0 overflow-y-auto"
+          onClose={setOpen}
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+
+            {/* This element is to trick the browser into centering the modal contents. */}
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+                  <button
+                    type="button"
+                    className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="sr-only">Close</span>
+                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <ExclamationIcon
+                      className="h-6 w-6 text-red-600"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg leading-6 font-medium text-gray-900"
+                    >
+                      El usuario o la password no son correctas
+                    </Dialog.Title>
+                    {}
+                  </div>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
       <nav aria-label="Progress">
         <ol
           role="list"
@@ -161,41 +278,43 @@ export default function Start() {
       <div className="bg-white">
         <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <h2 className="sr-only">Products</h2>
-
           <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-            {stateProductsDisplay.map((product) => (
+            {stateProductsDisplay.map((product, productIdx) => (
+              // Item Product
+              //<Link href="/stepsBuy/pcb">
               <div
-                //key={product.id}
+                //key={'a'}
+                className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
                 onClick={() => {
                   handleClickKeycaps(product);
                 }}
-                className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
               >
                 <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                   <img
-                    src={product.imageSrc}
+                    src={productsList[product].imageSrc}
                     alt={product.imageAlt}
                     className="w-full h-full object-center object-cover sm:w-full sm:h-full"
                   />
                 </div>
                 <div className="flex-1 p-4 space-y-2 flex flex-col">
                   <h3 className="text-sm font-medium text-gray-900">
-                    <a href={product.href}>
+                    <a href={productsList[product].href}>
                       <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
+                      {productsList[product].name}
                     </a>
                   </h3>
-                  <p className="text-sm text-gray-500">{product.description}</p>
+
                   <div className="flex-1 flex flex-col justify-end">
                     <p className="text-sm italic text-gray-500">
-                      {product.options}
+                      {productsList[product].imageAlt}
                     </p>
                     <p className="text-base font-medium text-gray-900">
-                      {product.price}
+                      {productsList[product].price}
                     </p>
                   </div>
                 </div>
               </div>
+              //</Link>
             ))}
           </div>
         </div>
