@@ -49,6 +49,18 @@ const productsList = {
     imageSrc: "/FotosMinijo/case/1.jpg",
     imageAlt: "RED",
   },
+  9: {
+    name: "FancyAlice Metal Black",
+    price: "$12000",
+    imageSrc: "/FotosMinijo/case/1.jpg",
+    imageAlt: "RED",
+  },
+    10: {
+    name: "FancyAlice Metal Black",
+    price: "$12000",
+    imageSrc: "/FotosMinijo/case/1.jpg",
+    imageAlt: "RED",
+  },
 };
 
 const steps = [
