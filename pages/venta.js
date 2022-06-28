@@ -76,7 +76,13 @@ const productsData = {
       imageSrc: "/FotosMinijo/case/5.jpg",
       imageAlt: "Brown",
     },
-  },
+    8: {
+      name: "FancyAlice Black Metal",
+      price: "$12000",
+      imageSrc: "/FotosMinijo/case/1.jpg",
+      imageAlt: "Grey",
+  }
+},
   Switches: {
     1: {
       name: "Gateron Black",
@@ -146,10 +152,8 @@ const productsData = {
       imageSrc: "/FotosMinijo/pcb/3.jpg",
       imageAlt: "Alps",
     },
-  },
+  }
 };
-
-;
 
 export default function Venta() {
     const { products, setProducts } = React.useContext(ProductsContext);
