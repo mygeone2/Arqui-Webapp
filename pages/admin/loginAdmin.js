@@ -19,8 +19,6 @@ const initialState = {
 
 export default function AdminLogin() {
   const { adminState, adminDispatch } = useContext(AdminAuthContext);
-  
-  
 
   const [data, setData] = useState(initialState);
   const [errorCredentials, setErrorCredentials] = useState(false);
@@ -62,7 +60,7 @@ export default function AdminLogin() {
     })
       .then((res) => {
         if (res.status == 200) {
-          dispatchAdmin({
+          adminDispatch({
             type: "LOGIN",
             payload: {
               isAdminAuthenticated: true,

@@ -10,6 +10,7 @@ export default function UploadFile() {
 
   // State to store uploaded file
   const [file, setFile] = React.useState("");
+   const [csvFile, SetCsvFile] = useState();
 
   // Handles file upload event and updates state
   const handleUpload = async (event) =>{
@@ -21,7 +22,7 @@ export default function UploadFile() {
 
     fetch(api_csv, {
       method: "POST",
-      body: file,
+      body: data,
     })
     .then((response) => response.json())
     .then((result) => {
