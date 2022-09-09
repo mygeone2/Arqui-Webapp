@@ -41,6 +41,36 @@ const productsList = {
     imageSrc: "/FotosMinijo/pcb/3.jpg",
     imageAlt: "Alps",
   },
+  7: {
+    name: "xd64",
+    price: "$26000",
+    imageSrc: "/FotosMinijo/pcb/3.jpg",
+    imageAlt: "Alps",
+  },
+  8: {
+    name: "xd64",
+    price: "$26000",
+    imageSrc: "/FotosMinijo/pcb/3.jpg",
+    imageAlt: "Alps",
+  },
+  9: {
+    name: "xd64",
+    price: "$26000",
+    imageSrc: "/FotosMinijo/pcb/3.jpg",
+    imageAlt: "Alps",
+  },
+  10: {
+    name: "xd64",
+    price: "$26000",
+    imageSrc: "/FotosMinijo/pcb/3.jpg",
+    imageAlt: "Alps",
+  },
+  11: {
+    name: "xd64",
+    price: "$26000",
+    imageSrc: "/FotosMinijo/pcb/3.jpg",
+    imageAlt: "Alps",
+  },
 };
 
 const steps = [

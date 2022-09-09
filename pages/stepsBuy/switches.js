@@ -43,6 +43,36 @@ const productsList = {
     imageSrc: "/FotosMinijo/switches/2.jpg",
     imageAlt: "Alps",
   },
+  7: {
+    name: "Kailh Low Profile ",
+    price: "$300",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "Alps",
+  },
+  8: {
+    name: "Kailh Low Profile ",
+    price: "$300",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "Alps",
+  },
+  9: {
+    name: "Kailh Low Profile ",
+    price: "$300",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "Alps",
+  },
+  10: {
+    name: "Kailh Low Profile ",
+    price: "$300",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "Alps",
+  },
+    11: {
+    name: "Kailh Low Profile ",
+    price: "$300",
+    imageSrc: "/FotosMinijo/switches/2.jpg",
+    imageAlt: "Alps",
+  },
 };
 
 

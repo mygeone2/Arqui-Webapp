@@ -41,6 +41,24 @@ const productsList = {
     imageSrc: "/FotosMinijo/keycaps/5.jpg",
     imageAlt: "MX Purple",
   },
+  6: {
+    name: "GMK",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/3.jpg",
+    imageAlt: "MX Sky Cho",
+  },
+  7: {
+    name: "GMK",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/4.jpg",
+    imageAlt: "MX AKUMA",
+  },
+  8: {
+    name: "PBTFANS",
+    price: "$10000",
+    imageSrc: "/FotosMinijo/keycaps/5.jpg",
+    imageAlt: "MX Purple",
+  },
 };
 
 const steps = [
